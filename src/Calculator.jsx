@@ -1,52 +1,69 @@
 import { useState } from "react";
 
 function Calculator() {
-    const [input, setInput] = useState("");
-    const [result, setResult] = useState(null);
+  const [num1, setNum1] = useState("");
+  const [num2, setNum2] = useState("");
+  const [operator, setOperator] = useState("+");
+  const [result, setResult] = useState(null);
 
-    function handleClick(value) {
-        setInput((prev) => prev + value);
+  function calculate() {
+    const firstNumber = parseFloat(num1);
+    const secondNumber = parseFloat(num2);
+
+    if (isNaN(firstNumber) || isNaN(secondNumber)) {
+      setResult("Enter valid numbers");
+      return;
     }
 
-    function handleClear() {
-        setInput("");
-        setResult(null);
+    let res;
+    switch (operator) {
+      case "+":
+        res = firstNumber + secondNumber;
+        break;
+      case "-":
+        res = firstNumber - secondNumber;
+        break;
+      case "*":
+        res = firstNumber * secondNumber;
+        break;
+      case "/":
+        res =
+          secondNumber !== 0
+            ? firstNumber / secondNumber
+            : "Cannot divide by zero";
+        break;
+      default:
+        res = "Invalid operator";
     }
 
-    function calculateResult() {
-        try {
-            setResult(eval(input)); // Replace with a safe math parser like `mathjs`
-        } catch {
-            setResult("Error");
-        }
-    }
+    setResult(res);
+  }
 
-    return (
-        <div className="calculator">
-            <div className="display">{result !== null ? result : input || "0"}</div>
-            <div className="buttons">
-                <button className="number" onClick={() => handleClick("1")}>1</button>
-                <button className="number" onClick={() => handleClick("2")}>2</button>
-                <button className="number" onClick={() => handleClick("3")}>3</button>
-                <button className="operator" onClick={() => handleClick("+")}>+</button>
-
-                <button className="number" onClick={() => handleClick("4")}>4</button>
-                <button className="number" onClick={() => handleClick("5")}>5</button>
-                <button className="number" onClick={() => handleClick("6")}>6</button>
-                <button className="operator" onClick={() => handleClick("-")}>-</button>
-
-                <button className="number" onClick={() => handleClick("7")}>7</button>
-                <button className="number" onClick={() => handleClick("8")}>8</button>
-                <button className="number" onClick={() => handleClick("9")}>9</button>
-                <button className="operator" onClick={() => handleClick("*")}>×</button>
-
-                <button className="clear" onClick={handleClear}>C</button>
-                <button className="number" onClick={() => handleClick("0")}>0</button>
-                <button className="equal" onClick={calculateResult}>=</button>
-                <button className="operator" onClick={() => handleClick("/")}>÷</button>
-            </div>
-        </div>
-    );
+  return (
+    <div className="calculator">
+      <h2>Simple Calculator</h2>
+      <input
+        type="number"
+        value={num1}
+        onChange={(e) => setNum1(e.target.value)}
+        placeholder="First number"
+      />
+      <select value={operator} onChange={(e) => setOperator(e.target.value)}>
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">×</option>
+        <option value="/">÷</option>
+      </select>
+      <input
+        type="number"
+        value={num2}
+        onChange={(e) => setNum2(e.target.value)}
+        placeholder="Second number"
+      />
+      <button onClick={calculate}>Calculate</button>
+      {result !== null && <h3>Result: {result}</h3>}
+    </div>
+  );
 }
 
 export default Calculator;

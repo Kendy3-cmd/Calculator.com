@@ -16,7 +16,7 @@ function IncrementDecrement() {
   }
 
   return (
-    <div>
+    <div className="Increment-main">
       <h1>INCREMENT THE NUMBER</h1>
       <h2>{count}</h2>
       <button onClick={Increment}>+</button>
